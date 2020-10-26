@@ -1,5 +1,7 @@
 package ipvc.estg.projetopmeu_gg
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -12,6 +14,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
+
+    val sharedPref: SharedPreferences = getSharedPreferences(
+        getString(R.string.sharedPref), Context.MODE_PRIVATE)
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
