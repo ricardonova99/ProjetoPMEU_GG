@@ -5,4 +5,5 @@
     <string name="edit">Edit</string>
     <string name="selectMultiple">Select Multiple</string>
     <string name="sharedPref" translatable="false">sharedFile</string>
+    <string name="removeAll">RemoveAll</string>
 </resources>
