@@ -6,4 +6,7 @@
     <string name="edit">Editar</string>
     <string name="selectMultiple">Selecionar Múltiplo</string>
     <string name="removeAll">Remover Tudo</string>
+    <string name="insertTitle">Inserir Título</string>
+    <string name="insertDescription">Inserir Descrição</string>
+    <string name="empty_not_saved" translatable="false">Valores Não Inseridos</string>
 </resources>

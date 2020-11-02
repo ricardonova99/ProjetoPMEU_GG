@@ -1,12 +1,14 @@
 package ipvc.estg.projetopmeu_gg
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
-
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ipvc.estg.projetopmeu_gg.R
 import ipvc.estg.projetopmeu_gg.ViewModel.NotaViewModel
 import ipvc.estg.projetopmeu_gg.adapters.NotaAdapter
+import ipvc.estg.projetopmeu_gg.entities.Nota
 
 
 class MainActivity : AppCompatActivity() {
@@ -45,7 +48,25 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
 
+        if (requestCode == newWordActivityRequestCode && resultCode == Activity.RESULT_OK) {
+            val ptitulo = data?.getStringExtra(AddNota.EXTRA_REPLY_TITULO)
+            val pdescricao = data?.getStringExtra(AddNota.EXTRA_REPLY_DESCRICAO)
+
+            if (ptitulo != null && pdescricao != null) {
+                val nota = Nota(titulo = ptitulo, descricao = pdescricao)
+                notaViewModel.insert(nota)
+            }
+
+        } else {
+            Toast.makeText(
+                applicationContext,
+                R.string.empty_not_saved,
+                Toast.LENGTH_LONG).show()
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
@@ -56,7 +77,15 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId)
         {
-            R.id.add -> true
+            R.id.add ->
+            {
+                val intent = Intent(this@MainActivity, AddNota::class.java)
+                startActivityForResult(intent, newWordActivityRequestCode)
+                true
+            }
+
+
+
             R.id.remove -> true
             R.id.edit -> true
             R.id.removeAll -> true
