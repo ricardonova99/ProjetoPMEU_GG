@@ -20,7 +20,7 @@ import ipvc.estg.projetopmeu_gg.adapters.NotaAdapter
 import ipvc.estg.projetopmeu_gg.entities.Nota
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CellClickListener {
 
     private lateinit var notaViewModel: NotaViewModel
     private val newWordActivityRequestCode = 1
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         // recycler view
         val recyclerView = findViewById<RecyclerView>(R.id.listaNotas)
-        val adapter = NotaAdapter(this)
+        val adapter = NotaAdapter(this, this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -93,5 +93,9 @@ class MainActivity : AppCompatActivity() {
              */
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onCellClickListener(data: Nota) {
+        //Toast.makeText(this, data.id.toString(), Toast.LENGTH_SHORT).show()
     }
 }
