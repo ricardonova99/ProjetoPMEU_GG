@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity(), CellClickListener {
 
     private lateinit var notaViewModel: NotaViewModel
     private val newWordActivityRequestCode = 1
+    private var adapter: NotaAdapter? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +33,7 @@ class MainActivity : AppCompatActivity(), CellClickListener {
 
         // recycler view
         val recyclerView = findViewById<RecyclerView>(R.id.listaNotas)
-        val adapter = NotaAdapter(this, this)
+        adapter = NotaAdapter(this, this)
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -39,7 +41,7 @@ class MainActivity : AppCompatActivity(), CellClickListener {
         notaViewModel = ViewModelProvider(this).get(NotaViewModel::class.java)
         notaViewModel.allNotas.observe(this, Observer { notas ->
             // Update the cached copy of the words in the adapter.
-            notas?.let { adapter.setNotas(it) }
+            notas?.let { adapter!!.setNotas(it) }
         })
 
         val sharedPref: SharedPreferences = getSharedPreferences(
@@ -84,11 +86,20 @@ class MainActivity : AppCompatActivity(), CellClickListener {
                 true
             }
 
+            R.id.remove ->
+            {
+                adapter!!.selectedNota?.id?.let { notaViewModel.deleteByID(it) }
 
+                true
+            }
 
-            R.id.remove -> true
             R.id.edit -> true
-            R.id.removeAll -> true
+
+            R.id.removeAll ->
+            {
+                notaViewModel.deleteAll()
+                true
+            }
             /* R.id.selectMultiple -> true
              */
             else -> super.onOptionsItemSelected(item)
