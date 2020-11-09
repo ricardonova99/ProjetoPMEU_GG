@@ -23,8 +23,9 @@ import ipvc.estg.projetopmeu_gg.entities.Nota
 class MainActivity : AppCompatActivity(), CellClickListener {
 
     private lateinit var notaViewModel: NotaViewModel
-    private val newWordActivityRequestCode = 1
     private var adapter: NotaAdapter? = null
+    private val newNotaActivityRequestCode = 1
+    private val editNotaActivityRequestCode = 2
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,16 +54,31 @@ class MainActivity : AppCompatActivity(), CellClickListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == newWordActivityRequestCode && resultCode == Activity.RESULT_OK) {
-            val ptitulo = data?.getStringExtra(AddNota.EXTRA_REPLY_TITULO)
-            val pdescricao = data?.getStringExtra(AddNota.EXTRA_REPLY_DESCRICAO)
+        if (resultCode == Activity.RESULT_OK)
+        {
+            if(requestCode == newNotaActivityRequestCode)
+            {
+                val pTitulo = data?.getStringExtra(AddNota.EXTRA_REPLY_TITULO)
+                val pDescricao = data?.getStringExtra(AddNota.EXTRA_REPLY_DESCRICAO)
 
-            if (ptitulo != null && pdescricao != null) {
-                val nota = Nota(titulo = ptitulo, descricao = pdescricao)
-                notaViewModel.insert(nota)
+                if (pTitulo!= null && pDescricao != null) {
+                    val nota = Nota(titulo = pTitulo, descricao = pDescricao)
+                    notaViewModel.insert(nota)
+                }
             }
-
-        } else {
+            else
+                if(requestCode == editNotaActivityRequestCode)
+                {
+                    val pTitulo = data?.getStringExtra(EditNota.EXTRA_REPLY_TITULO)
+                    val pDescricao = data?.getStringExtra(EditNota.EXTRA_REPLY_DESCRICAO)
+                    if (pTitulo!= null && pDescricao != null) {
+                        val nota = Nota(id = adapter!!.selectedNota?.id, titulo = pTitulo, descricao =  pDescricao)
+                        notaViewModel.updateNota(nota)
+                    }
+                }
+        }
+        else
+        {
             Toast.makeText(
                 applicationContext,
                 R.string.empty_not_saved,
@@ -82,7 +98,7 @@ class MainActivity : AppCompatActivity(), CellClickListener {
             R.id.add ->
             {
                 val intent = Intent(this@MainActivity, AddNota::class.java)
-                startActivityForResult(intent, newWordActivityRequestCode)
+                startActivityForResult(intent, newNotaActivityRequestCode)
                 true
             }
 
@@ -93,7 +109,16 @@ class MainActivity : AppCompatActivity(), CellClickListener {
                 true
             }
 
-            R.id.edit -> true
+            R.id.edit ->
+            {
+                val titulo: String = adapter!!.selectedNota?.titulo.toString()
+                val descricao: String = adapter!!.selectedNota?.descricao.toString()
+                val intent = Intent(this@MainActivity, EditNota::class.java)
+                intent.putExtra("titulo", titulo)
+                intent.putExtra("descricao", descricao)
+                startActivityForResult(intent, editNotaActivityRequestCode)
+                true
+            }
 
             R.id.removeAll ->
             {

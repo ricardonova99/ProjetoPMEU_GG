@@ -9,4 +9,5 @@
     <string name="insertTitle">Inserir Título</string>
     <string name="insertDescription">Inserir Descrição</string>
     <string name="empty_not_saved" translatable="false">Valores Não Inseridos</string>
+    <string name="save">Guardar</string>
 </resources>
