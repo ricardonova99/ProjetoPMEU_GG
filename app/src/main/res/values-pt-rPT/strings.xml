@@ -10,4 +10,11 @@
     <string name="insertDescription">Inserir Descrição</string>
     <string name="empty_not_saved" translatable="false">Valores Não Inseridos</string>
     <string name="save">Guardar</string>
+    <string name="username">Nome de Utilizador</string>
+    <string name="notes">Notas</string>
+    <string name="password">Palavra Chave</string>
+    <string name="coordenadas">Coordenadas</string>
+    <string name="distancia">Distância</string>
+    <string name="morada">Morada</string>
+    <string name="title_activity_maps">Mapa</string>
 </resources>

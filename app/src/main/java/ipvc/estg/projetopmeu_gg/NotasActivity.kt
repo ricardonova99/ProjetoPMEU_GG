@@ -14,13 +14,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import ipvc.estg.projetopmeu_gg.R
 import ipvc.estg.projetopmeu_gg.ViewModel.NotaViewModel
 import ipvc.estg.projetopmeu_gg.adapters.NotaAdapter
 import ipvc.estg.projetopmeu_gg.entities.Nota
 
 
-class MainActivity : AppCompatActivity(), CellClickListener {
+class NotasActivity : AppCompatActivity(), CellClickListener {
 
     private lateinit var notaViewModel: NotaViewModel
     private var adapter: NotaAdapter? = null
@@ -30,7 +29,7 @@ class MainActivity : AppCompatActivity(), CellClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_notas)
 
         // recycler view
         val recyclerView = findViewById<RecyclerView>(R.id.listaNotas)
@@ -45,8 +44,6 @@ class MainActivity : AppCompatActivity(), CellClickListener {
             notas?.let { adapter!!.setNotas(it) }
         })
 
-        val sharedPref: SharedPreferences = getSharedPreferences(
-            getString(R.string.sharedPref), Context.MODE_PRIVATE)
 
     }
 
@@ -97,7 +94,7 @@ class MainActivity : AppCompatActivity(), CellClickListener {
         {
             R.id.add ->
             {
-                val intent = Intent(this@MainActivity, AddNota::class.java)
+                val intent = Intent(this@NotasActivity, AddNota::class.java)
                 startActivityForResult(intent, newNotaActivityRequestCode)
                 true
             }
@@ -113,7 +110,7 @@ class MainActivity : AppCompatActivity(), CellClickListener {
             {
                 val titulo: String = adapter!!.selectedNota?.titulo.toString()
                 val descricao: String = adapter!!.selectedNota?.descricao.toString()
-                val intent = Intent(this@MainActivity, EditNota::class.java)
+                val intent = Intent(this@NotasActivity, EditNota::class.java)
                 intent.putExtra("titulo", titulo)
                 intent.putExtra("descricao", descricao)
                 startActivityForResult(intent, editNotaActivityRequestCode)
